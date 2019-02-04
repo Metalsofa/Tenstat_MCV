@@ -1,0 +1,8 @@
+Credits:
+    Software by David Medlock
+Acknowledgements:
+    Emilia Majewska - Visual Studio Code Theme - Roseate
+    COMAP (MCM/ICM guys) - Inspiration
+Software used:
+    Microsoft Visual Studio Code
+Sources:

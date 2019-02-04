@@ -1,0 +1,54 @@
+This is meant to be (at least in early development) semi-advanced software.
+Anyone comfortable with statistics and programming will have a field day with it.
+
+Analysis objects: (all of these creatable, manipulable, readable, and analyzable by the user)
+    Variables
+        Categorical (unordered)
+        Quantitative
+            Discrete (ordered categorical)
+                By nature
+                By interval imposition
+            Continuous
+    Variable Web
+        Shows all the variables and represents their 
+        dependencies and other relationships as a bunch of cables and cords, like a web.
+        Any time a data set relates two variables, a connection will appear there.
+    Data structures
+        Table
+        Lists
+        Vector
+        Matrix
+        Tensor
+            Multidimensional Categorical Variable (MCV) Tensor
+            Good for organizing and analyzing data sets with
+                    Multiple Categorical (or Intervaled Quantitative) Variables (these are what make the MCV Tensor extrememly useful)
+                    At least one Quantitative (discrete or continuous) variable
+    Data sources (User can import/export these in multiple ways, and have multiple going at once
+    for a given variable)
+        CSV or ISV files - interpreted as tables or lists
+    Parsing methods
+        Let the user define, edit, and save different methods of parsing data sources or text files
+        *It might be very good to have the software able to interpret multiple languages for this sort of thing
+        Even include methods for user-customizable analysis of differernt type of files including:
+            Video
+            Audio
+            Complex documents like reports, papers, court cases, etc.
+        The user can delimit data from a source into multiple tables if it would be helpul (like that darned census data)
+    Equations
+        Let the user define equations like in Maple, so that they can have certian derived quantities and categories for the purpose of analyzing their data
+    Indexes
+        Let the user have indexes for different objects, so they can easily move between a labeled object and a numbered one if they want to. Think of it like the user being able to create refrence tables for themelves
+        Also allows users to "rank" categorical variables if they want to
+    Charts
+        Different good-looking graphics and charts can be created by the user from their data and results
+    Sorting algorithms
+        If the software's built in sorting algorithms aren't enough, more can be programmed in
+    Results
+        The user can save the results of different analyses using the software in a way that is well-organized and lossless
+
+Analysis methods: (The user can carry these out by clicking "new analysis")
+    MCV Tensor - Intercorrelation Analysis
+        -Intercorrelation matrices for a single categorical dimension (one matrix for this dimension, holding any given number of others constant)
+        -Synthetic Proportionality - evaluate by 
+        -Other types of intercategorical analysis that account for every single data entry in the the MCV Tensor
+        -Interpret empty cells as... (0 or unknown/unavailable/NA)
