@@ -21,12 +21,17 @@ public:
     //Default constructor
     data_source() {
         location = "";
-        
+        interpretation = parsing_method();
+    }
+    data_source(std::string hwewo) {
+        location = hwewo;
+        interpretation = parsing_method();
     }
 
     /*Function that faithfully executes this parsing method
     on this file and returns the information so that it can be
     loaded into a table*/
+    //no here yet
 };
 
 #endif

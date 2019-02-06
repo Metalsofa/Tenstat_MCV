@@ -10,6 +10,7 @@ This header file will also contain the methods for reading/writing software to/f
 #include "console.h"
 #include "table.h"
 #include "index.h"
+#include "data_source.h"
 
 #include <vector>
 #include <string>
@@ -42,11 +43,12 @@ private:
     std::vector<table<double>> proj_double_tables;
     std::vector<table<int>> proj_int_tables;
     std::vector<table<float>> proj_float_tables;
-        //These float*'s point to the appropriate valeus of the variables they are assigned to
+        //These float*'s point to the appropriate values of the variables they are assigned to
     std::vector<tensor<float*>> proj_tensors;
     //Data Sources (Addresses & stuff)
-
+    std::vector<data_source> proj_data_sources;
     //Tables
+
     //Parsing methods
 
     //Sorting Algorithms
@@ -107,7 +109,10 @@ public:
         proj_indexes.push_back(new_dex);
         return true;
     }
-
+    //Add another data path to the project
+    void add_data_source(data_source source) {
+        proj_data_sources.push_back(source);
+    }
 };
 
 #endif

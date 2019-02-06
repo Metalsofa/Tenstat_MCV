@@ -10,7 +10,7 @@ which will later be fitted to GUI.*/
 #include "variable.h" //Data layout for the user is in terms of this
 #include "table.h" //Another important data structure
 #include "tensor.h" //The header file that started it all
-#include "data_source.h"
+#include "data_source.h" //Paths to the data the user is crunching
 #include "console.h" //Contains user-console interactivity
 #include "project.h" //Contains the information about tenstat_projects
 
@@ -29,7 +29,7 @@ void loop_console (tenstat_project& this_project) {
     print_project_info(this_project);
     cout << "Type help for a list of commands." << endl;
     while (go) {
-        command = prompt_command(".o. I am awaiting your input.");
+        command = prompt_command(".o. I am awaiting your input.",vector<int>({1, 2, 5, 6}));
         if (command == 5) { //'exit'
             go = false;
         }
@@ -40,9 +40,12 @@ void loop_console (tenstat_project& this_project) {
             }
         }
         if (command == 6) { //'new'
-            command = prompt_command("New what?");
+            command = prompt_command("New what?", {4, 8, 9, 15});
+            if (command == 15) { //'source'
+                this_project.add_data_source(data_source(prompt_string("Enter file name or file path.")));
+            }
             if (command == 4) { //'struct'
-                command = prompt_command("What kind of struct?");
+                command = prompt_command("What kind of struct?", {7});
                 if (command == 7) { //'tensor'
 
                 }
@@ -57,10 +60,10 @@ void loop_console (tenstat_project& this_project) {
                 unsigned long catc;
                 index* labdex;
                 index* descdex;
-                command = prompt_command("What kind of variable?");
+                command = prompt_command("What kind of variable?", {10, 11});
                 if (command == 10) { //'quantitative'
                     //Set this variable's 'type'
-                    command = prompt_command("Discrete, continuous, or intervaled?");
+                    command = prompt_command("Discrete, continuous, or intervaled?", {12, 13, 14});
                     switch (command) {
                         case 12: //'discrete'
                         vartype = 1;
@@ -127,7 +130,7 @@ void loop_console (tenstat_project& this_project) {
             }            
         }
         if (command == 2) { //'show'
-            command = prompt_command("Show what?");
+            command = prompt_command("Show what?", {8});
             if (command == 8) { //'project'
                 print_project_info(this_project);
             }
@@ -138,7 +141,7 @@ void loop_console (tenstat_project& this_project) {
 } 
 
 
-
+//Main Function
 int main (int argc, char* argv[]) {
     //Initial stuff
     startup_message();

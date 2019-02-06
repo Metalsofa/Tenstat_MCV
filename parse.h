@@ -87,13 +87,14 @@ public:
                 
             break;
             case 1: //LABELED TABLE
-
+            label_columns.push_back(0);
+            label_rows.push_back(0);
             break;
             case 2: //UNLABELED LIST
 
             break;
             case 3: //LABELED LIST
-
+            label_rows.push_back(0);
             break;
         }
         row_delimiters.push_back('\n');

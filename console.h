@@ -30,13 +30,14 @@ const std::vector<std::string> legal_commands = {
     "discrete",         //12
     "continuous",       //13
     "intervaled",       //14
+    "source",           //15
     
 };
 
 /*Iterates through a vector and returns the index corresponding to the query, if it exists,
 returning -1 otherwise*/
 template<class guts>
-const int search(guts& needle, std::vector<guts> haystack/*Const, so can't be passed by ref. Don't try.*/) {
+const int search(guts needle, std::vector<guts> haystack/*Const, so can't be passed by ref. Don't try.*/) {
     for (unsigned int owo = 0; owo < haystack.size(); owo++) {
         if (haystack[owo] == needle) {
             return owo;
@@ -47,8 +48,8 @@ const int search(guts& needle, std::vector<guts> haystack/*Const, so can't be pa
 }
 
 //Validates a command, returning 0 if there is no such command as the searched one
-unsigned int vcom (std::string command) {
-    if (search(command, legal_commands) == -1)
+unsigned int vcom (std::string command, std::vector<int> specify) {
+    if (search(command, legal_commands) == -1 && search(search(command, legal_commands), specify))
         return 0;
     return search(command, legal_commands);
 }
@@ -158,13 +159,13 @@ void print_update_message(std::string message) {
     std::cout << '[' << message << ']' << std::endl;
 }
 
-unsigned int prompt_command(std::string prompt) {
+unsigned int prompt_command(std::string prompt, std::vector<int> specify) {
     std::cout << prompt << std::endl;
     std::cout << "<...>>>";
     std::string rets;
     std::cin.clear();
     std::cin >> rets;
-    return vcom(rets);
+    return vcom(rets, specify);
 }
 
 //Loads a .ten file into the software 
