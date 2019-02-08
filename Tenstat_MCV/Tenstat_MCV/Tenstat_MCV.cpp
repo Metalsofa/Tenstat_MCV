@@ -11,8 +11,10 @@ which will later be fitted to GUI.*/
 #include "table.h" //Another important data structure
 #include "tensor.h" //The header file that started it all
 #include "data_source.h" //Paths to the data the user is crunching
-#include "console.h" //Contains user-console interactivity
 #include "project.h" //Contains the information about tenstat_projects
+
+//Other .cpp files
+#include "cons.cpp"
 
 //Standard Libraries:
 #include <iostream> //For the Console User Interface

@@ -7,7 +7,6 @@ This header file will also contain the methods for reading/writing software to/f
 
 #include "variable.h"
 #include "tensor.h"
-#include "console.h"
 #include "table.h"
 #include "index.h"
 #include "data_source.h"

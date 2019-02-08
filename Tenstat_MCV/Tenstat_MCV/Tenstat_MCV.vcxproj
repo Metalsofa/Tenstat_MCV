@@ -155,7 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_stat.h" />
-    <ClInclude Include="console.h" />
+    <ClInclude Include="cons.cpp" />
     <ClInclude Include="data_source.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="index.h" />

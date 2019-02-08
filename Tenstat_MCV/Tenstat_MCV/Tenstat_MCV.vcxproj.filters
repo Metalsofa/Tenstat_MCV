@@ -23,9 +23,6 @@
     <ClInclude Include="basic_stat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="console.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="data_source.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="variable.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cons.cpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
