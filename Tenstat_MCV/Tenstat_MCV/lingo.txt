@@ -1,0 +1,64 @@
+label - for "namable" objects, the internal representation of the name is as a private string call "label"
+
+
+
+Console Formatting:
+
+
+Table Title - Table Description
+        Column Label 1  Column Label 2  Column 3  etc.
+        --------------  --------------  --------  ----
+Row 1   Value 1         Value 1
+Row 2   Value 2         Value 3
+
+
+
+|||||||||||||||||||||||||||||
+||      Wizard Header      ||
+|||||||||||||||||||||||||||||
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        INFORMATION HEADER        
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Subheader
+---------
+
+[Change made to file]
+
+
+(Choose an option) {
+	0: Listing
+	1: Various
+	2: Options
+}
+
+
+[!] ERROR: ERROR MESSAGE [!]
+
+
+User input prompts:
+Awaiting command
+<...>>>
+
+Awaiting y/n 1/0 t/f yes/no
+<y/n>>>
+
+Option
+<opt>>>
+
+Awaiting input of type...
+float
+<flt>>>
+
+int
+<int>>>
+
+char
+<cha>>>
+
+bool
+<bool>>
+
+string
+<str>>>

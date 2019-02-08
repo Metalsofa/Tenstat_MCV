@@ -1,0 +1,169 @@
+/*Land of forgotten code*/
+
+
+//from tensor.h
+//Commenting out the following code because, as fun as it is, it doesn't fit the format of this software.
+/*
+//Defines the properties of a tensors various dimensions
+class categorical_dimension {
+private:
+	//The label for this particular dimension, eg. location, chemical, favorite ice cream, etc.
+	string label;
+	//The description for this dimension (optional)
+	string description;
+	//The size of the tensor in this dimensoion (number of categories)
+	long unsigned int length;
+	//The index of category names (optional)
+	vector<string> identifiers;
+	//The glossary of indices (optional)
+	map<string, int> IDs;
+public:
+    //Description accessor
+    const string get_description() {
+        return description;
+    }
+    //Name acccessor
+    const string get_label() {
+        return label;
+    }
+    //Index accessor
+    const vector<string> index() {
+        return identifiers;
+    }
+    //Glossary accessor
+    const map<string, int> glossary() {
+        return IDs;
+    }
+	/*The categorical_dimension object knows many constructors/
+	//Default constructor, essentially an empty tensor
+	categorical_dimension() {
+		length = 0;
+	}
+	//Elaborate "know-it-all" constructor
+	categorical_dimension(string _label, string _description, vector<string>& labels) {
+		label = _label;
+		description = _description;
+		length = labels.size();
+		assign_labels(labels);
+	}
+	//This constructor requires a label, description, and size for this dimension
+	categorical_dimension(string _label, string _description, long unsigned int _size) {
+		label = _label;
+		description = _description;
+		length = _size;
+	}
+	//This constructor requires a label and size
+	categorical_dimension(string _label, long unsigned int _size) {
+		label = _label;
+		length = _size;
+	}
+	//This constructor requires only a size
+	categorical_dimension(long unsigned int _size) {
+		length = _size;
+	}
+	//Subscript with an integer between brackets for the associated category
+	string operator[] (unsigned long index) {
+		return identifiers[index];
+	}
+	//Subscript with a string between brackets for the associated index
+	unsigned long operator[] (string gloss) {
+		return IDs[gloss];
+	}
+	//Returns the size of the tensor in this dimension
+	unsigned long size() {
+		return length;
+	}
+	//Set the category labels for this dimension if you haven't already
+	void assign_labels(vector<string>& _labels) {
+		identifiers.clear();
+		IDs.clear();
+		for (unsigned long i = 0; i < _labels.size() && i < length; i++) {
+			identifiers.push_back(_labels[i]);
+			IDs.emplace(_labels[i],i);
+		}
+	}
+};
+
+
+//From console.h
+
+/*
+template<class tdat>
+//Use a loop of command prompts to let the user create a tensor
+tensor<tdat> user_created_tensor () {
+    print_wizard_header("Welcome to the Tensor Wizard");
+    vector<categorical_dimension> tenspecs;
+    string tensor_name = prompt_string("Enter a name for this tensor:");
+    while (true) {
+        cout << tensor_name << " presently has " << tenspecs.size() << " categorical dimensions." << endl;
+        if (!prompt_yesno("Add another dimension?")) {
+            break;
+        }
+        else {
+            tenspecs.push_back(categorical_dimension(
+                prompt_string("Enter name for this dimension:"),
+                prompt_string("Enter a description for this dimension:"),
+                prompt_int("How many categories in this dimension?")
+            ));
+            switch (prompt_yesno(
+                "Name these categories now?\n0:Not now\t1: Enter names manually\t"
+                + "2: Names from file\t3: Names from index")) {
+            case 1: //Manual entry loop
+                vector<string> dlabs;
+                for (unsigned int i = 0; i < tenspecs.back().size(); i++) {
+                    dlabs.push_back(
+                        prompt_string(
+                            "What should we call " + tenspecs.back().get_label() + " category #" 
+                            + to_string(i) + " of " + to_string(tenspecs.back().size() - 1) + "?"
+                        )
+                    );
+                }
+            case 2: //Labels from 'index' object
+
+            case 0: //No labels
+            }
+        }
+    }
+    return tensor<tdat>(tensor_name, tenspecs);
+}
+*/
+
+/*
+//Nicely output all of the Tensor's data into std::cout
+template<class tdata>
+void print_tensor(tensor<tdata> data) {
+    //Print the name of this tensor
+    cout << data.name << endl;
+    //Nice looking dashes
+    for (unsigned int i = 0; i < data.name.size(); i++) {
+        cout << "-";
+    }
+    cout << endl;
+    //Print the basic info about this tensor's dimensions and categories
+    vector<categorical_dimension> info = data.get_categories();
+    //Number of categorical dimensions
+    cout << info.size() << " categorical dimensions:" << endl;
+    //Categorical dimension names and categories
+    for (unsigned int i = 0; i < info.size(); i++) {
+        cout << "Dimension " << i << ": ";
+        cout << info[i].get_label() << " - ";
+        cout << info[i].get_description() << " - ";
+        cout << info[i].size() << " categories" << endl;
+        cout << '\t';
+        for (unsigned int j = 0; j < info[i].index().size() 
+                && info[i].index().size() == info[i].size(); j++) {
+            cout << info[i][j];
+            if (j < info[i].index().size() - 1) {
+                cout << " - ";
+            }
+        }
+        if (info[i].index().size() != info[i].size()) {
+            cout << "[categories unlabeled or improperly labeled]" << endl;
+        }
+        cout << endl;
+    }
+    cout << "Data:" << endl;
+    //This will require some recursion that goes in the tensor and subtensor objects
+
+}
+*/
