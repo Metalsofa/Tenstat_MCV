@@ -2,7 +2,6 @@
 #ifndef __index_h
 #define __index_h
 
-#include "variable.h"
 
 #include <string>
 #include <vector>

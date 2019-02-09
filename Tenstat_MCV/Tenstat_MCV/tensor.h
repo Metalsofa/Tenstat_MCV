@@ -41,6 +41,9 @@ public:
 		can use it to allocate space for member pointer
 		"next"*/
 	}
+	const unsigned int dimensions() const {
+		return depth;
+	}
 	//Returns a refrence to value (t) of this element, if (t) is specified
 	tensor_data_type& operator() (int t){
 		if (depth != 0) {
@@ -124,11 +127,10 @@ public:
 	subtensor<tensor_entry_type>& operator[] (unsigned long index) {
 		return (*contents)[index];
 	}
-    //Accessors
-    const std::vector<variable>& get_categories() {
-        return categories;
+    //Access the first value of this 
+    const variable& operator() (unsigned int dimension) {
+        return categories[dimension];
     }
-
 	//Array-based constructor, doesn't use variables. This constructor is a relic for testing purposes; don't use it unless for testing purposes.
 	tensor(std::string tensor_name //Name this tensor, if you like. This argument is skippable.
 	, unsigned int dimc //Pass the number of dimensions as an integer

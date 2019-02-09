@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Tenstat_MCV.cpp">
+    <ClCompile Include="soft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,8 +53,14 @@
     <ClInclude Include="variable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cons.cpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="console_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wizard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Analysis.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

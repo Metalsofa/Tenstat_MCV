@@ -1,6 +1,9 @@
 /*Your one-stop shop for iostream-based user interactivity.
 Also potentially useful beyond that, so don't go scrapping it.*/
 
+#ifndef __cons_h
+#define __cons_h
+
 #include "variable.h"
 #include "tensor.h"
 #include "project.h"
@@ -14,7 +17,7 @@ using namespace std;
 
 
 //This list contains ALL commands, even sub-commands.
-vector<string> legal_commands = {
+static vector<string> legal_commands = {
 	"INVALID_COMMAND",  //0
 	"help",             //1
 	"show",             //2
@@ -244,3 +247,5 @@ void print_project_info(tenstat_project& proj) {
 	//Print information about data structures
 	//NOTDONE
 }
+
+#endif

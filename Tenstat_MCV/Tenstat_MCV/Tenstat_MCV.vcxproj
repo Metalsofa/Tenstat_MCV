@@ -151,11 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Tenstat_MCV.cpp" />
+    <ClInclude Include="Analysis.h" />
+    <ClInclude Include="wizard.h" />
+    <ClCompile Include="soft.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basic_stat.h" />
-    <ClInclude Include="cons.cpp" />
+    <ClInclude Include="console_interface.h" />
     <ClInclude Include="data_source.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="index.h" />
