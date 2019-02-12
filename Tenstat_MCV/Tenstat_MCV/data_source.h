@@ -9,7 +9,7 @@ how they should be parsed and interpreted automatically */
 #include <string>
 #include <fstream>
 
-
+using namespace std;
 
 class data_source {
 private:
@@ -23,8 +23,9 @@ public:
         location = "";
         interpretation = parsing_method();
     }
-    data_source(std::string hwewo) {
-        location = hwewo;
+	//Location-only constructor
+    data_source(std::string filepath) {
+        location = filepath;
         interpretation = parsing_method();
     }
 
@@ -33,5 +34,19 @@ public:
     loaded into a table*/
     //no here yet
 };
+
+string get_file_extention(string& filename) {
+	string rets = "";
+	bool ext;
+	for (unsigned int i = 0; i < filename.size(); i++) {
+		if (filename[i] == '.') {
+			ext = true;
+		}
+		if (ext) {
+			rets.push_back(filename[i]);
+		}
+	}
+	return rets;
+}
 
 #endif

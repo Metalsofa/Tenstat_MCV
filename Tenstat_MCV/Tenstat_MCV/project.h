@@ -46,8 +46,6 @@ private:
     std::vector<tensor<float*>> proj_tensors;
     //Data Sources (Addresses & stuff)
     std::vector<data_source> proj_data_sources;
-    //Tables
-
     //Parsing methods
 
     //Sorting Algorithms

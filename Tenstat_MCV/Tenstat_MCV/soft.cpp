@@ -10,6 +10,7 @@ which will later be fitted to GUI.*/
 #include "project.h" //Contains the information about tenstat_projects
 #include "wizard.h"
 #include "console_interface.h"
+#include "analysis.h"
 
 //Standard Libraries:
 #include <iostream> //For the Console User Interface
@@ -26,7 +27,16 @@ void loop_console(tenstat_project& this_project) {
 	print_project_info(this_project);
 	cout << "Type help for a list of commands." << endl;
 	while (go) {
-		command = prompt_command(".o. I am awaiting your input.", vector<int>({ 1, 2, 5, 6 }));
+		command = prompt_command(".o. I am awaiting your input.", { 1, 2, 5, 6 , 16, 17 });
+		if (command == 16) { //'debug'
+			command = prompt_command("Debug what?", { 17 });
+			if (command == 17) { //'crunch'
+				test_analysis(prompt_string("Enter an input file:"));
+			}
+		}
+		if (command == 17) { //'crunch
+
+		}
 		if (command == 5) { //'exit'
 			go = false;
 		}

@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Analysis.h" />
+    <ClInclude Include="analysis.h" />
     <ClInclude Include="wizard.h" />
     <ClCompile Include="soft.cpp" />
   </ItemGroup>
@@ -168,6 +168,11 @@
     <ClInclude Include="table.h" />
     <ClInclude Include="tensor.h" />
     <ClInclude Include="variable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="output.txt" />
+    <Text Include="samp.txt" />
+    <Text Include="sample_input.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

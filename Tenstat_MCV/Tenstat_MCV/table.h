@@ -10,6 +10,7 @@ The sofware will be doing a lot of
 #include <string>
 #include <iostream>
 
+using namespace std;
 
 //Basic table, all the same class. Cannot have headers 
 template<class tab_dat>
@@ -82,6 +83,13 @@ public:
         nominal_height = 0;
         nominal_width = 0;
     }
+	//Vector constructor
+	table<tab_dat>(string& name, vector<vector<tab_dat>>& vectab) {
+		nominal_height = vectab.size();
+		nominal_width = vectab.back().size();
+		contents = vectab;
+		label = name;
+	}
     //Constructor for known width, height
     table<tab_dat>(std::string name, unsigned long _width, unsigned long _height) {
         label = name;

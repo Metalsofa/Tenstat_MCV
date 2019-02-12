@@ -22,6 +22,8 @@ class parsing_method {
 private:
     //Internal representation for this method's name
     std::string label;
+	//What table this should all be read into
+	table<float>* output_table;
     /*List of row-numbers to interpret as labels
     for each of these, an index is made available through
     the data source analyzed.*/
@@ -44,11 +46,35 @@ private:
     //Same as above but for rows
     std::vector<int> subdivision_rows;
 public:
-    //Builds and returns a table by reading a file stream
-    table<int> table_from_ifstream(std::ifstream& reader) {
-        table<int> rett;
-
-        return rett;
+    //Builds and returns a float table by reading a file
+    table<float> tablef_from_ifstream(string& filename) {
+		ifstream textfile(filename);
+		vector<string> contents;
+		string line;
+		if (textfile.is_open()) {
+			cout << "Opened '" << filename << "' successfully." << endl;
+			//This while loop pushes each line into an element
+			while (getline(textfile, line)) {
+				contents.emplace_back(line);
+			}
+			textfile.close();
+		}
+		else {
+			cerr << "Failed to open '" << filename << "'" << endl;
+			return table<float>();
+		}
+		vector<vector<float>> retv;
+		stringstream reader;
+		for (unsigned int i = 0; i < contents.size(); i++) {
+			retv.push_back(vector<float>(0));
+			reader = stringstream(contents[i]);
+			float temp;
+			while (reader >> temp) {
+				retv[i].push_back(temp);
+			}
+		}
+		
+		return table<float>(filename, retv);
     }
 
     //Default constructor; uses basic UNLABELED TABLE format, assumes that CSV and TSV won't conflict

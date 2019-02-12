@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Text Files">
+      <UniqueIdentifier>{0098ca31-e8f5-4d45-9f2c-bdfbdce88f4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="soft.cpp">
@@ -59,8 +62,19 @@
     <ClInclude Include="wizard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Analysis.h">
+    <ClInclude Include="analysis.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sample_input.txt">
+      <Filter>Text Files</Filter>
+    </Text>
+    <Text Include="samp.txt">
+      <Filter>Text Files</Filter>
+    </Text>
+    <Text Include="output.txt">
+      <Filter>Text Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -1,3 +1,6 @@
+#pragma once
+//More advanced statistical computing techniques go in here
+
 //For our basic methods, we'll need
 
 #ifndef __analysis_h
@@ -7,8 +10,6 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <fstream>
-#include <sstream>
 
 using namespace std;
 
@@ -45,10 +46,11 @@ public:
 	//Default constructor
 	datarange() {
 		datacount = 0;
+		contents = new datum*[0];
 	}
 	datarange(unsigned long length) {
 		datacount = length;
-		contents = new datum*[datacount];
+		contents = new datum*[length];
 	}
 	//Vector-refrence constructor
 	datarange(vector<datum>& input_vector) {
@@ -64,23 +66,6 @@ public:
 		contents = new datum*[datacount];
 		for (unsigned long i = 0; i < datacount; i++) {
 			assign(i, input_array[i]);
-		}
-	}
-	//Table range constructor
-	datarange(table<datum>& literature, unsigned long i1, unsigned long j1,
-		unsigned long i2, unsigned long j2) {
-		if (i1 > i2)
-			swap(i1, i2);
-		if (i1 > j2)
-			swap(j1, j2);
-		datacount = (i2 - i1 + 1) * (j2 - j1 + 1);
-		contents = new datum*[datacount];
-		unsigned long walk = 0;
-		for (unsigned long i = i1; i <= i2; i++) {
-			for (unsigned long j = j1; j <= j2; j++) {
-				contents[walk] = &(literature(i, j));
-				walk++;
-			}
 		}
 	}
 	//Copy constructor
@@ -103,7 +88,6 @@ public:
 	//OPERATORS
 	//Returns a direct refrence to data point i
 	datum& operator[] (unsigned long i) {
-		validate_index(i);
 		return *(contents[i]);
 	}
 	//Returns a direct refrence to the pointer to data point i
@@ -193,13 +177,12 @@ template<class num>
 float stddevf(datarange<num>& data) {
 	float* n = new float[data.size()];
 	for (int i = 0; i < data.size(); i++) {
-		n[i] = powf(float(data[i]) - meanf(data), 2);
+		n[i] += powf(float(data[i]) - meanf(data), 2.0f);
 	}
 	datarange<float> rsm(n, data.size());
 	float meen = sum(rsm) / float(data.size() - 1);
 	delete[] n;
-	meen = sqrtf(meen);
-	return meen;
+	return sqrtf(fabsf(mean));
 }
 
 //Returns the sample standard deviation of a datarange as a double
@@ -207,7 +190,7 @@ template<class num>
 double stddev(datarange<num>& data) {
 	double* n = new double[data.size()];
 	for (int i = 0; i < data.size(); i++) {
-		n[i] = pow(double(data[i]) - mean(data), 2.0);
+		n[i] += pow(double(data[i]) - mean(data), 2.0);
 	}
 	datarange<double> rsm(n, data.size());
 	double meen = sum(rsm) / double(data.size() - 1);
@@ -265,9 +248,9 @@ float propf(datarange<num>& datax, datarange<num>& datay) {
 	float* deno = new float[datax.size()];
 	float xbar = meanf(datax);
 	float ybar = meanf(datay);
-	for (int i = 0; i < datax.size(); i++) {
-		nume[i] = ((float(datax[i]) - xbar) * (float(datay[i]) - ybar));
-		deno[i] = powf((float(datax[i]) - xbar),2);
+	for (int i = 0; 0 < datax.size(); i++) {
+		nume[i] = (float(datax[i]) - xbar * (float(datay[i]) - ybar));
+		deno[i] = (float(datay[i]) - ybar);
 	}
 	datarange<float> lvaln(nume, datax.size());
 	datarange<float> lvald(deno, datay.size());
@@ -287,7 +270,7 @@ double prop(datarange<num>& datax, datarange<num>& datay) {
 	double* deno = new double[datax.size()];
 	double xbar = mean(datax);
 	double ybar = mean(datay);
-	for (int i = 0; i < datax.size(); i++) {
+	for (int i = 0; 0 < datax.size(); i++) {
 		nume[i] = (double(datax[i]) - xbar * (double(datay[i]) - ybar));
 		deno[i] = (double(datay[i]) - ybar);
 	}
@@ -304,18 +287,18 @@ template<class num>
 float segcorrf(datarange<num>& datax, datarange<num>& datay, unsigned long center, unsigned long radius) {
 	unsigned long start = center - radius;
 	unsigned long end = center + radius;
-	if (center < radius) {
+	if (center - radius < 0) {
 		start = 0;
 	}
 	if (center + radius >= datax.size()) {
 		end = datax.size() - 1;
 	}
-	datarange<num> crunchx(1 + end - start);
-	datarange<num> crunchy(1 + end - start);
+	datarange<num> crunchx(1 + start - end);
+	datarange<num> crunchy(1 + start - end);
 	//Inclusively copy in the appropriate values
-	for (unsigned long i = start; i <= end; i++) {
-		crunchx(i - start) = datax(i);
-		crunchy(i - start) = datay(i);
+	for (unsigned long i = center - radius; i <= center + radius; i++) {
+		crunchx(i - center + radius) = datax(i);
+		crunchy(i - center + radius) = datay(i);
 	}
 	return corrf(crunchx, crunchy);
 }
@@ -325,18 +308,18 @@ template<class num>
 double segcorr(datarange<num>& datax, datarange<num>& datay, unsigned long center, unsigned long radius) {
 	unsigned long start = center - radius;
 	unsigned long end = center + radius;
-	if (center < radius) {
+	if (center - radius < 0) {
 		start = 0;
 	}
 	if (center + radius >= datax.size()) {
 		end = datax.size() - 1;
 	}
-	datarange<num> crunchx(1 + end - start);
-	datarange<num> crunchy(1 + end - start);
+	datarange<num> crunchx(1 + start - end);
+	datarange<num> crunchy(1 + start - end);
 	//Inclusively copy in the appropriate values
-	for (unsigned long i = start; i <= end; i++) {
-		crunchx(i - start) = datax(i);
-		crunchy(i - start) = datay(i);
+	for (unsigned long i = center - radius; i <= center + radius; i++) {
+		crunchx(i - center + radius) = datax(i);
+		crunchy(i - center + radius) = datay(i);
 	}
 	return corr(crunchx, crunchy);
 }
@@ -346,18 +329,18 @@ template<class num>
 float segpropf(datarange<num>& datax, datarange<num>& datay, unsigned long center, unsigned long radius) {
 	unsigned long start = center - radius;
 	unsigned long end = center + radius;
-	if (center < radius) {
+	if (center - radius < 0) {
 		start = 0;
 	}
 	if (center + radius >= datax.size()) {
 		end = datax.size() - 1;
 	}
-	datarange<num> crunchx(1 + end - start);
-	datarange<num> crunchy(1 + end - start);
+	datarange<num> crunchx(1 + start - end);
+	datarange<num> crunchy(1 + start - end);
 	//Inclusively copy in the appropriate values
-	for (unsigned long i = start; i <= end; i++) {
-		crunchx(i - start) = datax(i);
-		crunchy(i - start) = datay(i);
+	for (unsigned long i = center - radius; i <= center + radius; i++) {
+		crunchx(i - center + radius) = datax(i);
+		crunchy(i - center + radius) = datay(i);
 	}
 	return propf(crunchx, crunchy);
 }
@@ -367,14 +350,14 @@ template<class num>
 double segprop(datarange<num>& datax, datarange<num>& datay, unsigned long center, unsigned long radius) {
 	unsigned long start = center - radius;
 	unsigned long end = center + radius;
-	if (center < radius) {
+	if (center - radius < 0) {
 		start = 0;
 	}
 	if (center + radius >= datax.size()) {
 		end = datax.size() - 1;
 	}
-	datarange<num> crunchx(1 + end - start);
-	datarange<num> crunchy(1 + end - start);
+	datarange<num> crunchx(1 + start - end);
+	datarange<num> crunchy(1 + start - end);
 	//Inclusively copy in the appropriate values
 	for (unsigned long i = start; i <= end; i++) {
 		crunchx(i - start) = datax(i);
@@ -517,17 +500,17 @@ public:
 		opt_seg_prop_range = opt_segpropf_range(datax, datay);
 	}
 	//Output the information found from this statistical analysis
-	void print(ostream& dest) {
-		dest << "Output for " << datay_label << " versus " << datax_label << endl;
-		dest << "Correlation:		r = " << correlation << endl;
-		dest << "Proportionality:	a = " << proportionality << endl;
-		dest << "Optimum Segmentation Radius: " << opt_rad << endl;
-		dest << "Optimized Segmented Correlation Coefficient Product: " << opt_seg_corr_prod << endl;
-		dest << "Optimized Segmented Proportionality Values: [";
+	void print() {
+		cout << "Output for " << datax_label << " versus " << datay_label << endl;
+		cout << "Correlation: " << correlation << endl;
+		cout << "Proportionality: " << proportionality << endl;
+		cout << "Optimum Segmentation Radius: " << opt_rad << endl;
+		cout << "Optimized Segmented Correlation Coefficient Product: " << opt_seg_corr_prod;
+		cout << "Optimized Segmented Proportionality Values: [";
 		for (unsigned int i = 0; i < opt_seg_prop_range.size() - 1; i++) {
-			dest << opt_seg_prop_range[i] << ", ";
+			cout << opt_seg_prop_range[i] << ", ";
 		}
-		dest << opt_seg_prop_range[opt_seg_prop_range.size() - 1] << ']' << endl;
+		cout << opt_seg_prop_range[opt_seg_prop_range.size() - 1] << ']' << endl;
 	}
 	//Access the segmentation results
 	vector<float>& get_results() {
@@ -539,14 +522,9 @@ public:
 template<class num>
 vector<multi_range_analysis_output> multi_seg_diff_stat(datarange<datarange<num>>& big_data, datarange<string>& varnames, unsigned int depth) {
 	vector<multi_range_analysis_output> retv;
-	cout << "Crunching... " << big_data.size() << " variables..." << endl;
-	cout << endl;
 	for (unsigned long i = 0; i < big_data.size(); i++) {
-		cout << i + 1<< " / " << big_data.size() << endl;
 		for (unsigned long j = 0; j < big_data.size(); j++) {
-			cout << '\t' << j + 1 << " / " << big_data.size() << '\t';
 			recursive_crunch(big_data[i], big_data[j], depth, retv, varnames[i], varnames[j], big_data, varnames);
-			cout << endl;
 		}
 	}
 	return retv;
@@ -559,82 +537,13 @@ void recursive_crunch(datarange<float>& datax, datarange<float>& datay,
 	datarange<datarange<float>>& big_data, datarange<string>& varnames) {
 	unsigned int last = output_repository.size();
 	output_repository.push_back(multi_range_analysis_output(datax, datay, labelx, labely));
-	cout << depth;
-	for (unsigned int i = 0; i < depth; i++) {
-		cout << '-';
-	}
-	if (depth == 0) {
+	if (depth == 0)
 		return;
-	}
 	string dname = "d(" + labely + ")/d(" + labelx + ")";
 	datarange<float> diff(output_repository[last].get_results());
 	for (unsigned int i = 0; i < big_data.size(); i++) {
 		recursive_crunch(big_data[i], diff, depth - 1, output_repository, varnames[i], dname, big_data, varnames);
 	}
-	cout << ' ';
-}
-
-
-
-//Also for testing purposes
-vector<vector<float>> datatable_fromfile(string filename) {
-	ifstream textfile;
-	textfile.open(filename);
-	vector<string> contents;
-	string line;
-	if (textfile.is_open()) {
-		cout << "Opened '" << filename << "' successfully." << endl;
-		//This while loop pushes each line into an element
-		while (getline(textfile, line)) {
-			contents.emplace_back(line);
-		}
-		textfile.close();
-	}
-	else {
-		cerr << "Failed to open '" << filename << "'" << endl;
-		return vector<vector<float>>(0);
-	}
-	vector<vector<float>> retv;
-	stringstream reader;
-	for (unsigned int i = 0; i < contents.size(); i++) {
-		retv.push_back(vector<float>(0));
-		reader = stringstream(contents[i]);
-		float temp;
-		while (reader >> temp) {
-			retv[i].push_back(temp);
-		}
-	}
-	return retv;
-}
-
-//Testing purposes only
-void test_analysis(string filename) {
-	cout << "Now testing Multivariate Segmented Differential Statistical Intercorrelaion and Interproportionality Analysis." << endl;
-	if (filename.size() == 0) {
-		cout << "Using default file: sample_input.txt" << endl;
-		filename = "sample_input.txt";
-	}
-	vector<vector<float>> numbers = datatable_fromfile(filename);
-	vector<datarange<float>> watchnums;
-	vector<string> names;
-	for (unsigned int i = 0; i < numbers.size(); i++) {
-		datarange<float> temp(numbers[i]);
-		watchnums.push_back(temp);
-		names.push_back("");
-		names.back() += char(65 + i);
-	}
-	datarange<datarange<float>> beeg_data(watchnums);
-	datarange<string> namen(names);
-	unsigned int deep = 2;
-	ofstream write;
-	write.open("output.txt");
-	vector<multi_range_analysis_output> testbatch = multi_seg_diff_stat(beeg_data, namen, deep);
-	for (unsigned int i = 0; i < testbatch.size(); i++) {
-		testbatch[i].print(write);
-		write << endl;
-	}
-	write.close();
-	cout << "Done." << endl;
 }
 
 #endif

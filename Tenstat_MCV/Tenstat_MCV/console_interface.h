@@ -34,6 +34,8 @@ static vector<string> legal_commands = {
 	"continuous",       //13
 	"intervaled",       //14
 	"source",           //15
+	"debug",			//16
+	"crunch",			//17
 
 };
 
