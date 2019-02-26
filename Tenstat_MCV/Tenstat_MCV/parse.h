@@ -22,6 +22,8 @@ class parsing_method {
 private:
     //Internal representation for this method's name
     std::string label;
+	//Internal repersentation for this method's descriptions
+	std::string description;
 	//What table this should all be read into
 	table<float>* output_table;
     /*List of row-numbers to interpret as labels
@@ -46,6 +48,14 @@ private:
     //Same as above but for rows
     std::vector<int> subdivision_rows;
 public:
+	//Get the name of this method
+	std::string& get_name() {
+		return label;
+	}
+	//Get the description for this method
+	std::string& get_description() {
+		return description;
+	}
     //Builds and returns a float table by reading a file
     table<float> tablef_from_ifstream(string& filename) {
 		ifstream textfile(filename);

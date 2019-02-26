@@ -28,7 +28,6 @@ public:
         location = filepath;
         interpretation = parsing_method();
     }
-
     /*Function that faithfully executes this parsing method
     on this file and returns the information so that it can be
     loaded into a table*/

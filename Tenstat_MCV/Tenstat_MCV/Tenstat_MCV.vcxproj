@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="analysis.h" />
+    <ClInclude Include="crunch.h" />
     <ClInclude Include="wizard.h" />
     <ClCompile Include="soft.cpp" />
   </ItemGroup>

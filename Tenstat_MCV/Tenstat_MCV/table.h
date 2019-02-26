@@ -10,6 +10,8 @@ The sofware will be doing a lot of
 #include <string>
 #include <iostream>
 
+#include "index.h"
+
 using namespace std;
 
 //Basic table, all the same class. Cannot have headers 
@@ -23,6 +25,11 @@ private:
     //Nominal sizes
     unsigned long nominal_width;
     unsigned long nominal_height;
+	//Indices attached to this table
+	index* row_labels;
+	index* row_descriptions;
+	index* column_labels;
+	index* column_descriptions;
     //Fix the size properly, even if it means sacrifice
     void fix_dimensions() {
         int Xtrunc = 0;
@@ -34,7 +41,7 @@ private:
             Ypop++;
         }
         while (contents.size() < nominal_height) {
-            contents.push_back(0);
+            contents.push_back(vector<tab_dat>(nominal_width));
             Ytrunc++;
         }
         for (unsigned int i = 0; i < contents.size(); i++) {
@@ -77,18 +84,34 @@ public:
         fix_dimensions();
         return nominal_width;
     }
+	//Access the indices for this table
+	index& get_row_labels() {
+		return *row_labels;
+	}
+	index& get_column_labels() {
+		return *column_labels;
+	}
     //Default constructor
     table<tab_dat>() {
         label = "Unnamed table";
         nominal_height = 0;
         nominal_width = 0;
     }
-	//Vector constructor
+	//Vector-table constructor
 	table<tab_dat>(string& name, vector<vector<tab_dat>>& vectab) {
 		nominal_height = vectab.size();
 		nominal_width = vectab.back().size();
 		contents = vectab;
 		label = name;
+	}
+	//Vector-table constructor, with row/column labels
+	table<tab_dat>(string& name, vector<vector<tab_dat>>& vectab, index& row_names, index& column_names) {
+		nominal_height = vectab.size();
+		nominal_width = vectab.back().size();
+		contents = vectab;
+		label = name;
+		row_labels = &row_names;
+		column_labels = &column_names;
 	}
     //Constructor for known width, height
     table<tab_dat>(std::string name, unsigned long _width, unsigned long _height) {

@@ -18,13 +18,18 @@ using namespace std;
 
 /*TABLE WIZARD: Walk the user through the creation of a new table from a file.*/
 void wiz_new_table(tenstat_project& proj) {
+	print_wizard_header("New Table");
 	table<float> addtab;
 	string tabn = prompt_string("What is the name for this table?");
+	int indexrow = prompt_option("What index is to be used for the row labels?", proj.index_names());
+	int indexcol = prompt_option("What index is to be used for the column labels?", proj.index_names());
+	
 }
 
 /*VARIABLE WIZARD: Walk the user through the definition of a new variable.
 Be sure to pass a refrence to the project this variable is being added to*/
 void wiz_new_variable(tenstat_project& proj) {
+	print_wizard_header("New Variable");
 	//Initialize a bunch of parts of what this new variable could potentially be
 	variable addvar;
 	int vartype;

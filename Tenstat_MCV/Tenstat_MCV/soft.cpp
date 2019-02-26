@@ -11,6 +11,7 @@ which will later be fitted to GUI.*/
 #include "wizard.h"
 #include "console_interface.h"
 #include "analysis.h"
+#include "crunch.h"
 
 //Standard Libraries:
 #include <iostream> //For the Console User Interface
@@ -23,6 +24,7 @@ void loop_console(tenstat_project& this_project) {
 	//Basic console variables
 	bool go = true;
 	int command;
+	string input;
 	//Show project info
 	print_project_info(this_project);
 	cout << "Type help for a list of commands." << endl;
@@ -34,8 +36,17 @@ void loop_console(tenstat_project& this_project) {
 				test_analysis(prompt_string("Enter an input file:"));
 			}
 		}
-		if (command == 17) { //'crunch
-
+		if (command == 17) { //'crunch'
+			int method = prompt_command("Crunch how?", { 18 });
+			int object = prompt_command("Crunch what?", { 19 });
+			if (object == 19) {//'table'
+				object = prompt_option("Which table?", this_project.table_names());
+				if (method == 18) { //'seginter'
+					unsigned int depth = prompt_int("Analyze at what differential depth?");
+					vector<int> chosen = prompt_vec_int("Enter line numbers for analysis, or press enter to use fill table.");
+					seginter_crunch_table(object, chosen, depth, this_project);
+				}
+			}
 		}
 		if (command == 5) { //'exit'
 			go = false;
@@ -47,11 +58,13 @@ void loop_console(tenstat_project& this_project) {
 				this_project.add_data_source(data_source(prompt_string("Enter file name or file path.")));
 			}
 			if (command == 4) { //'struct'
-				command = prompt_command("What kind of struct?", { 7 });
+				command = prompt_command("What kind of struct?", { 7, 19 });
 				if (command == 7) { //'tensor'
 					//wiz_new_tensor(this_project);
 				}
-
+				if (command == 19) {//'table'
+					wiz_new_table(this_project);
+				}
 			}
 			if (command == 9) { //'variable'
 				wiz_new_variable(this_project);

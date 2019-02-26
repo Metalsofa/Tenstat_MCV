@@ -11,6 +11,7 @@ Also potentially useful beyond that, so don't go scrapping it.*/
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
 #include <fstream>
 
 using namespace std;
@@ -36,6 +37,8 @@ static vector<string> legal_commands = {
 	"source",           //15
 	"debug",			//16
 	"crunch",			//17
+	"seginter",			//18
+	"table",			//19
 
 };
 
@@ -59,7 +62,7 @@ unsigned int vcom(string command, vector<int> specify) {
 		return 0;
 	if (com == 1) { //'help'
 		cout << "Here is a list of all valid commands: " << endl;
-		for (int i = 1; i < legal_commands.size(); i++) {
+		for (int i = 1; i < int(legal_commands.size()); i++) {
 			//If the command is in the specified list, show it.
 			if (search(i, specify) != -1) {
 				cout << legal_commands[i] << endl;
@@ -121,6 +124,21 @@ string prompt_string(string prompt) {
 	cin >> ws;
 	getline(cin, rets);
 	return rets;
+}
+
+vector<int> prompt_vec_int(string prompt) {
+	cout << prompt << endl;
+	cout << "<str>>>";
+	string line;
+	cin >> ws;
+	getline(cin, line);
+	stringstream input(line);
+	vector<int> retv;
+	int push;
+	while (input >> push) {
+		retv.push_back(push);
+	}
+	return retv;
 }
 
 //Prompt the user for a bool, then return it.

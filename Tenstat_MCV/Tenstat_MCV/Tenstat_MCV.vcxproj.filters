@@ -65,6 +65,9 @@
     <ClInclude Include="analysis.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="crunch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="sample_input.txt">

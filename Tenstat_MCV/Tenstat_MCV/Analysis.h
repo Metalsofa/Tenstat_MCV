@@ -67,8 +67,8 @@ public:
 		}
 	}
 	//Table range constructor
-	datarange(table<datum>& literature, unsigned long i1, unsigned long j1,
-		unsigned long i2, unsigned long j2) {
+	/*
+	datarange(table<datum>& literature, unsigned long i1, unsigned long j1, unsigned long i2, unsigned long j2) {
 		if (i1 > i2)
 			swap(i1, i2);
 		if (i1 > j2)
@@ -83,6 +83,7 @@ public:
 			}
 		}
 	}
+	*/
 	//Copy constructor
 	datarange(datarange<datum>& cop) {
 		datacount = cop.size();
@@ -117,8 +118,8 @@ public:
 		return contents[i];
 	}
 
-	//Assignment operator
-	datarange& operator= (datarange& other) {
+	//Assignment operator - const
+	datarange& operator= (const datarange other) {
 		if (datacount > 0) {
 			delete[] contents;
 		}
@@ -491,8 +492,11 @@ vector<double> opt_segprop_range(datarange<num>& datax, datarange<num>& datay) {
 }
 
 //Structures the output data of relating two data sets //Looks like I'm settling on floats
-class multi_range_analysis_output {
+class seginter_results {
 private:
+	//Keep track of the data
+	datarange<float> xdata;
+	datarange<float> ydata;
 	//Labels
 	string datax_label;
 	string datay_label;
@@ -507,7 +511,9 @@ private:
 	//Optimized Segemented Proportionality Values
 	vector<float> opt_seg_prop_range;
 public:
-	multi_range_analysis_output(datarange<float>& datax, datarange<float>& datay, string& labelx, string& labely) {
+	seginter_results(datarange<float>& datax, datarange<float>& datay, string& labelx, string& labely) {
+		xdata = datax;
+		ydata = datay;
 		datax_label = labelx;
 		datay_label = labely;
 		correlation = corrf(datax, datay);
@@ -518,12 +524,12 @@ public:
 	}
 	//Output the information found from this statistical analysis
 	void print(ostream& dest) {
-		dest << "Output for " << datay_label << " versus " << datax_label << endl;
+		dest << "Tenseg Output for " << datay_label << " versus " << datax_label << endl;
 		dest << "Correlation:		r = " << correlation << endl;
 		dest << "Proportionality:	a = " << proportionality << endl;
-		dest << "Optimum Segmentation Radius: " << opt_rad << endl;
-		dest << "Optimized Segmented Correlation Coefficient Product: " << opt_seg_corr_prod << endl;
-		dest << "Optimized Segmented Proportionality Values: [";
+		dest << "Opt. Seg. Radius:		" << opt_rad << endl;
+		dest << "Opt. Seg. Corr. Prod:  " << opt_seg_corr_prod << endl;
+		dest << "Opt. Seg. Prop. Range: [";
 		for (unsigned int i = 0; i < opt_seg_prop_range.size() - 1; i++) {
 			dest << opt_seg_prop_range[i] << ", ";
 		}
@@ -535,10 +541,10 @@ public:
 	}
 };
 
-//Multivariate segmented differential statistical analysis output, makes use of recursion
+//Multivariate Segmented Differential Statistical Analysis output, makes use of recursion
 template<class num>
-vector<multi_range_analysis_output> multi_seg_diff_stat(datarange<datarange<num>>& big_data, datarange<string>& varnames, unsigned int depth) {
-	vector<multi_range_analysis_output> retv;
+vector<seginter_results> multi_seg_diff_stat(datarange<datarange<num>>& big_data, datarange<string> varnames, unsigned int depth) {
+	vector<seginter_results> retv;
 	cout << "Crunching... " << big_data.size() << " variables..." << endl;
 	cout << endl;
 	for (unsigned long i = 0; i < big_data.size(); i++) {
@@ -552,13 +558,42 @@ vector<multi_range_analysis_output> multi_seg_diff_stat(datarange<datarange<num>
 	return retv;
 }
 
+//Perform Seg Diff. Analysis on a set of dataranges and push the results into their appropriate repository
+template<class num>
+void seginter_crunch(datarange<datarange<num>>& big_data, datarange<string> varnames, unsigned int depth, vector<seginter_results>& repository) {
+	vector<seginter_results> results = multi_seg_diff_stat(big_data, varnames, depth);
+	for (unsigned int i = 0; i < results.size(); i++) {
+		repository.push_back(results[i]);
+	}
+}
+
+template<class num> 
+num range_min(datarange<num>& data) {
+	num ret = data[0];
+	for (unsigned long i = 0; i < data.size(); i++) {
+		if (data[i] < ret)
+			ret = data[i];
+	}
+	return ret;
+}
+
+template<class num>
+num range_max(datarange<num>& data) {
+	num ret = data[0];
+	for (unsigned long i = 0; i < data.size(); i++) {
+		if (data[i] > ret)
+			ret = data[i];
+	}
+	return ret;
+}
+
 //Get a whole bunch of relations crunched out recursively and iteratively
 void recursive_crunch(datarange<float>& datax, datarange<float>& datay,
-	unsigned int depth, vector<multi_range_analysis_output>& output_repository,
+	unsigned int depth, vector<seginter_results>& output_repository,
 	string& labelx, string& labely,
 	datarange<datarange<float>>& big_data, datarange<string>& varnames) {
 	unsigned int last = output_repository.size();
-	output_repository.push_back(multi_range_analysis_output(datax, datay, labelx, labely));
+	output_repository.push_back(seginter_results(datax, datay, labelx, labely));
 	cout << depth;
 	for (unsigned int i = 0; i < depth; i++) {
 		cout << '-';
@@ -607,6 +642,8 @@ vector<vector<float>> datatable_fromfile(string filename) {
 	return retv;
 }
 
+
+
 //Testing purposes only
 void test_analysis(string filename) {
 	cout << "Now testing Multivariate Segmented Differential Statistical Intercorrelaion and Interproportionality Analysis." << endl;
@@ -628,7 +665,7 @@ void test_analysis(string filename) {
 	unsigned int deep = 2;
 	ofstream write;
 	write.open("output.txt");
-	vector<multi_range_analysis_output> testbatch = multi_seg_diff_stat(beeg_data, namen, deep);
+	vector<seginter_results> testbatch = multi_seg_diff_stat(beeg_data, namen, deep);
 	for (unsigned int i = 0; i < testbatch.size(); i++) {
 		testbatch[i].print(write);
 		write << endl;
@@ -636,5 +673,7 @@ void test_analysis(string filename) {
 	write.close();
 	cout << "Done." << endl;
 }
+
+
 
 #endif

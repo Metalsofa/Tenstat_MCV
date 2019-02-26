@@ -10,12 +10,15 @@ This header file will also contain the methods for reading/writing software to/f
 #include "table.h"
 #include "index.h"
 #include "data_source.h"
+#include "plots.h"
+#include "parse.h"
 
 #include <vector>
 #include <string>
 #include <fstream>
 #include <iostream>
 
+using namespace std;
 
 //Returns false if it failed to save
 bool write_project(std::string filename) {
@@ -47,17 +50,17 @@ private:
     //Data Sources (Addresses & stuff)
     std::vector<data_source> proj_data_sources;
     //Parsing methods
-
+	vector<parsing_method> proj_parsing_methods;
     //Sorting Algorithms
 
     //Plots
-
+	vector<plot> proj_plots;
     //Equations
 
     //Indexes
     std::vector<index> proj_indexes;
-    //Results
-
+    //Results repositories
+	vector<seginter_results> proj_seginter_repository;
     //True if the current version is saved/backed up
     bool saved;
 public:
@@ -68,6 +71,10 @@ public:
         label = name;
         proj_web = web();
         saved = false;
+		//Standard inclusions
+		proj_indexes.push_back(index("Alphabet", "The Roman alphabet, all uppercase",
+			{ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+			"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" }));
     }
 	//Default constructor
 	tenstat_project() {
@@ -87,15 +94,46 @@ public:
     void save() {
         write_project(label + ".ten");
     }
+	//Returns a refrence to one of this project's many tables
+	table<float>& get_float_table(unsigned long table_ID) {
+		return proj_float_tables[table_ID];
+	}
     //Save this project to a different .ten file
     void save_as(std::string new_name) {
         label = new_name;
         save();
     }
     //Returns a refrence to this project's index vector
-    std::vector<index>& get_indexes() { //Don't bother me about spelling...
-        return proj_indexes;
+    index& get_index(unsigned long whomst) { //Don't bother me about spelling...
+        return proj_indexes[whomst];
     }
+	//Returns an option list for the tables in this project
+	vector<string> table_names() {
+		vector<string> retv;
+		for (unsigned int i = 0; i < proj_float_tables.size(); i++) {
+			retv.push_back(proj_float_tables[i].get_name() + " " + to_string(proj_float_tables[i].height()) + "x" + to_string(proj_float_tables[i].width()));
+		}
+		return retv;
+	}
+	//Returns an option list for the indices in this project
+	vector<string> index_names() {
+		vector<string> retv;
+		for (unsigned int i = 0; i < proj_indexes.size(); i++) {
+			retv.push_back(proj_indexes[i].get_label() + " (" + to_string(proj_indexes[i].size()) + " entries) - " + proj_indexes[i].get_description());
+		}
+		return retv;
+	}
+	//Returns an option list for the parsing methods in this project
+	vector<string> parsing_names() {
+		vector<string> retv;
+		for (unsigned int i = 0; i < proj_parsing_methods.size(); i++) {
+			retv.push_back(proj_parsing_methods[i].get_name() + " - " + proj_parsing_methods[i].get_description());
+		}
+	}
+	//Returns a refrence to this project's seginter results repository
+	vector<seginter_results>& get_seginter_repository() {
+		return proj_seginter_repository;
+	}
     /*Add an additional index to this project's saved ones.
     Returns false if there was a namespace collision*/
     bool add_index(index& new_dex) {

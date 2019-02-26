@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-
+#include "analysis.h"
 
 class index {
 private:
@@ -45,10 +45,13 @@ public:
         return entries.size();
     }
 	//Elaborate "know-it-all" constructor
-	index(std::string _label, std::string _description, std::vector<std::string>& labels) {
+	index(std::string _label, std::string _description, std::vector<std::string> labels) {
 		label = _label;
 		description = _description;
 		entries = labels;
+	}
+	datarange<string> get_datarange() {
+		return datarange<string>(entries);
 	}
 };
 
