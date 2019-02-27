@@ -113,6 +113,18 @@ public:
 		row_labels = &row_names;
 		column_labels = &column_names;
 	}
+	//Vector-table constructor, with row/column labels and descriptions
+	table<tab_dat>(string& name, vector<vector<tab_dat>>& vectab, index& row_names, index& column_names,
+		index& row_descs, index& column_descs) {
+		nominal_height = vectab.size();
+		nominal_width = vectab.back().size();
+		contents = vectab;
+		label = name;
+		row_labels = &row_names;
+		column_labels = &column_names;
+		row_descriptions = &row_descs;
+		column_descriptions = &column_descs;
+	}
     //Constructor for known width, height
     table<tab_dat>(std::string name, unsigned long _width, unsigned long _height) {
         label = name;
@@ -120,6 +132,29 @@ public:
         nominal_height = _height;
         fix_dimensions();
     }
+	//Constructor for known width, height, with row/column labels
+	table<tab_dat>(std::string name, index& row_names, index& column_names) {
+		label = name;
+		nominal_width = row_names.size();
+		nominal_height = column_names.size();
+		fix_dimensions();
+		label = name;
+		row_labels = &row_names;
+		column_labels = &column_names;
+	}
+	//Constructor for known width, height, with row/column labels and descriptions
+	table<tab_dat>(std::string name,
+		index& row_names, index& column_names, index& row_descs, index& column_descs) {
+		label = name;
+		nominal_width = row_names.size();
+		nominal_height = column_names.size();
+		fix_dimensions();
+		label = name;
+		row_labels = &row_names;
+		column_labels = &column_names;
+		row_descriptions = &row_descs;
+		column_descriptions = &column_descs;
+	}
 };
 
 #endif

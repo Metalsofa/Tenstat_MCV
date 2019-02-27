@@ -50,6 +50,11 @@ public:
 		description = _description;
 		entries = labels;
 	}
+	//For if you don't know yet what the entries will be
+	index(std::string _label, std::string _description) {
+		label = _label;
+		description = _description;
+	}
 	datarange<string> get_datarange() {
 		return datarange<string>(entries);
 	}

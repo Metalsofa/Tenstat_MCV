@@ -29,51 +29,68 @@ void loop_console(tenstat_project& this_project) {
 	print_project_info(this_project);
 	cout << "Type help for a list of commands." << endl;
 	while (go) {
-		command = prompt_command(".o. I am awaiting your input.", { 1, 2, 5, 6 , 16, 17 });
-		if (command == 16) { //'debug'
-			command = prompt_command("Debug what?", { 17 });
-			if (command == 17) { //'crunch'
+		command = prompt_command(".o. I am awaiting your input.", { chelp, cshow, cexit, cnew , cdebug, ccrunch });
+		if (command == cdebug) { //'debug'
+			command = prompt_command("Debug what?", { cdebug });
+			if (command == ccrunch) { //'crunch'
 				test_analysis(prompt_string("Enter an input file:"));
 			}
 		}
-		if (command == 17) { //'crunch'
-			int method = prompt_command("Crunch how?", { 18 });
-			int object = prompt_command("Crunch what?", { 19 });
-			if (object == 19) {//'table'
+		if (command == ccrunch) { //'crunch'
+			int method = prompt_command("Crunch how?", { cseginter });
+			int object = prompt_command("Crunch what?", { ctable });
+			if (object == ctable) {//'table'
 				object = prompt_option("Which table?", this_project.table_names());
-				if (method == 18) { //'seginter'
+				if (method == cseginter) { //'seginter'
 					unsigned int depth = prompt_int("Analyze at what differential depth?");
-					vector<int> chosen = prompt_vec_int("Enter line numbers for analysis, or press enter to use fill table.");
+					vector<int> chosen = prompt_vec_int(
+						"Enter line numbers for analysis, or press enter to use fill table.");
 					seginter_crunch_table(object, chosen, depth, this_project);
 				}
 			}
 		}
-		if (command == 5) { //'exit'
+		if (command == cexit) { //'exit'
 			go = false;
 		}
-		if (command == 6) { //'new'
-			command = prompt_command("New what?", { 4, 8, 9, 15 });
-			if (command == 15) { //'source'
+		if (command == cnew) { //'new'
+			command = prompt_command("New what?", { cstruct, cproject, cvariable, csource, cindex});
+			if (command == csource) { //'source'
 				//wiz_new_source(this_project);
 				this_project.add_data_source(data_source(prompt_string("Enter file name or file path.")));
 			}
-			if (command == 4) { //'struct'
-				command = prompt_command("What kind of struct?", { 7, 19 });
-				if (command == 7) { //'tensor'
+			if (command == cstruct) { //'struct'
+				command = prompt_command("What kind of struct?", { ctensor, ctable });
+				if (command == ctensor) { //'tensor'
 					//wiz_new_tensor(this_project);
 				}
-				if (command == 19) {//'table'
+				if (command == ctable) {//'table'
 					wiz_new_table(this_project);
 				}
 			}
-			if (command == 9) { //'variable'
+			if (command == cvariable) { //'variable'
 				wiz_new_variable(this_project);
 			}
+			if (command == cindex) { //'index'
+				wiz_new_index(this_project);
+			}
+			if (command == cproject) { //'project'
+
+			}
 		}
-		if (command == 2) { //'show'
-			command = prompt_command("Show what?", { 8 });
-			if (command == 8) { //'project'
+		if (command == cshow) { //'show'
+			command = prompt_command("Show what?", { cproject, cindices, ctables });
+			if (command == cproject) { //'project'
 				print_project_info(this_project);
+			}
+			if (command == cindices) {
+				for (unsigned int i = 0; i < this_project.index_names().size(); i++) {
+					print_object(this_project.get_index(i));
+				}
+			}
+			if (command == ctables) {
+				for (unsigned int i = 0; i < this_project.table_names().size(); i++) {
+					print_object(this_project.get_float_table(i));
+				}
 			}
 		}
 	}

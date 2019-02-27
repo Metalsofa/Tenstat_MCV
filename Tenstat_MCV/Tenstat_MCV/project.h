@@ -45,8 +45,8 @@ private:
     std::vector<table<double>> proj_double_tables;
     std::vector<table<int>> proj_int_tables;
     std::vector<table<float>> proj_float_tables;
-        //These float*'s point to the appropriate values of the variables they are assigned to
-    std::vector<tensor<float*>> proj_tensors;
+    //These float*'s point to the appropriate values of the variables they are assigned to
+    std::vector<tensor<float>> proj_tensors;
     //Data Sources (Addresses & stuff)
     std::vector<data_source> proj_data_sources;
     //Parsing methods
@@ -123,6 +123,17 @@ public:
 		}
 		return retv;
 	}
+	//Returns an option list for the variables in this project
+	vector<string> variable_names() {
+		vector<string> retv;
+		for (unsigned int i = 0; i < proj_web.get_contents().size(); i++) {
+			retv.push_back(
+				proj_web.get_contents()[i].get_name() + " - " + proj_web.get_contents()[i].vartype_name()
+				+ " - " + proj_web.get_contents()[i].get_description()
+			);
+		}
+		return retv;
+	}
 	//Returns an option list for the parsing methods in this project
 	vector<string> parsing_names() {
 		vector<string> retv;
@@ -154,6 +165,14 @@ public:
     void add_data_source(data_source source) {
         proj_data_sources.push_back(source);
     }
+	//Add another tensor to this project
+	void add_tensor(tensor<float> newt) {
+		proj_tensors.push_back(newt);
+	}
+	//Add another table to this project
+	void add_ftable(table<float> tabn) {
+		proj_float_tables.push_back(tabn);
+	}
 };
 
 #endif

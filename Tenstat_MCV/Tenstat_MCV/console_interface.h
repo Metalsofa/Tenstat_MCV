@@ -39,8 +39,45 @@ static vector<string> legal_commands = {
 	"crunch",			//17
 	"seginter",			//18
 	"table",			//19
+	"index",			//20
+	"edit",				//21
+	"tables",
+	"variables",
+	"indices",
 
 };
+
+//Let us enumerate these also!
+enum numcommand {
+	cINVALID_COMMAND,   //0
+	chelp,              //1
+	cshow,              //2
+	cweb,               //3
+	cstruct,            //4
+	cexit,              //5
+	cnew,		        //6
+	ctensor,            //7
+	cproject,           //8
+	cvariable,          //9
+	cquantitative,      //10
+	ccategorical,       //11
+	cdiscrete,          //12
+	ccontinuous,        //13
+	cintervaled,        //14
+	csource,            //15
+	cdebug,				//16
+	ccrunch,			//17
+	cseginter,			//18
+	ctable,				//19
+	cindex,				//20
+	cedit,				//21
+	ctables,
+	cvariables,
+	cindices,
+
+};
+
+
 
 /*Iterates through a vector and returns the index corresponding to the query, if it exists,
 returning -1 otherwise*/
@@ -222,10 +259,36 @@ tenstat_project load_project(string filename) {
 	return retp;
 }
 
+//Print out a table all nice-like
+template <class entry>
+void print_object(table<entry>& inkroll) {
+	cout << inkroll.get_name() << " - " << inkroll.height() << 'x' << inkroll.width() << endl;
+	for (unsigned int i = 0; i < inkroll.width(); i++) {
+		cout << '\t' << inkroll.get_column_labels()[i];
+	}
+	for (unsigned int i = 0; i < inkroll.height(); i++) {
+		cout << inkroll.get_row_labels()[i] << '\t';
+		for (unsigned int j = 0; j < inkroll.width(); j++) {
+			cout << inkroll(i, j) << '\t';
+		}
+		cout << endl;
+	}
+}
+
+//Print out an index all nice-like
+void print_object(index& dex) {
+	cout << dex.get_label() << endl;
+	for (unsigned int j = 0; j < dex.size(); j++) {
+		cout << '\t' << j << ".\t" << dex[j] << endl;
+	}
+	cout << endl;
+}
+
 //Show's all available info about this project through the console
 void print_project_info(tenstat_project& proj) {
 	print_information_header("Project Information: " + proj.get_name());
 	//Print information about variable web:
+	cout << endl;
 	print_subheader("Variables");
 	//Pointers to the web and its clusters
 	web* webb = &proj.get_web();
@@ -264,7 +327,23 @@ void print_project_info(tenstat_project& proj) {
 				webb->get_contents()[i].get_description() << endl;
 		}
 	}
+	cout << endl;
+	//Print information about indexes
+	print_subheader("Indexes");
+	vector<string> temp = proj.index_names();
+	for (unsigned int i = 0; i < temp.size(); i++) {
+		cout << temp[i] + " - " << proj.get_index(i).size() << " entries" << endl;
+	}
+	cout << endl;
 	//Print information about data structures
+	//Tables & other Tensors
+	//Tables
+	print_subheader("Tables");
+	temp = proj.table_names();
+	for (unsigned int i = 0; i < temp.size(); i++) {
+		cout << temp[i] << endl;
+	}
+	cout << endl;
 	//NOTDONE
 }
 

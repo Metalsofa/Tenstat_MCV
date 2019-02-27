@@ -87,10 +87,10 @@ public:
 			//Tear out the last page of the handbook
 			pages--;
 			//Allocate space for this object's array of child subtensors
-			subtensor<tensor_data_type> temp[length];
+			subtensor<tensor_data_type>* temp = new subtensor<tensor_data_type>[length];
             next = temp;
 			//For each element in this object's array of child subtensors,
-			for (unsigned long i = 0 ; i < length ; i++) {
+			for (unsigned long i = 0; i < length; i++) {
 				//Pass the child a copy of the truncated inctructions.
 				next[i] = subtensor<tensor_data_type>(handbook, pages);
 			}
@@ -99,7 +99,7 @@ public:
 			//This object's size defaults to 1, 
 			length = 1;
 			//So the container size is also 1,
-            tensor_data_type temp [length];
+            tensor_data_type* temp = new tensor_data_type[length];
 			value = temp;
 			//And the data it contains defaults to 0 as well
 			value[0] = 0;
@@ -139,15 +139,16 @@ public:
 		contents = new subtensor<tensor_entry_type>(dims, dimc);
 	}
 	//Vector-based constructor
-	tensor(std::string name, std::vector<variable>* variables) { //Pass all of the category information through a std::vector
+	tensor(std::string name, std::vector<variable*> variables) { //Pass all of the category information through a std::vector
 		label = name;
 		categories = variables;
-		unsigned int dimc = variables -> size();
-		unsigned long dims[dimc];
+		unsigned int dimc = variables.size();
+		unsigned long* dims = new unsigned long[dimc];
 		for(unsigned int i = 0; i < dimc; i++) {
-			dims[i] = (*variables)[i].size();
+			dims[i] = variables[i] -> size();
 		}
 		contents = new subtensor<tensor_entry_type>(dims, dimc);
+		delete dims;
 	}
 	//Set in motion the self-destruct sequence of this tensor
 	~tensor() {

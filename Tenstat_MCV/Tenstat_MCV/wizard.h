@@ -23,7 +23,30 @@ void wiz_new_table(tenstat_project& proj) {
 	string tabn = prompt_string("What is the name for this table?");
 	int indexrow = prompt_option("What index is to be used for the row labels?", proj.index_names());
 	int indexcol = prompt_option("What index is to be used for the column labels?", proj.index_names());
-	
+	if (prompt_yesno("Assign description indices as well?")) {
+		int descrow = prompt_option("What index is to be used for the row descriptions?", proj.index_names());
+		int desccol = prompt_option("What index is to be used for the column descriptions?", proj.index_names());
+		addtab = table<float>(tabn, proj.get_index(indexrow), proj.get_index(indexcol),
+			proj.get_index(descrow), proj.get_index(desccol));
+		return;
+	}
+	addtab = table<float>(tabn, proj.get_index(indexrow), proj.get_index(indexcol));
+	proj.add_ftable(addtab);
+}
+
+/*TENSOR WIZARD: Walk the user through the creation of a new tensor from some other tensors.*/
+void wiz_new_tensor(tenstat_project& proj) {
+	print_wizard_header("New Tensor");
+	string tname = prompt_string("Enter a name for this tensor.");
+	unsigned long dimc = prompt_int("How many dimensions should this tensor have?");
+	vector<variable*> tvar;
+	for (unsigned int i = 0; i < tvar.size(); i++) {
+		tvar.push_back(&(proj.get_web().get_contents()[prompt_option(
+			"Assign a variable to dimension " + to_string(i) + ".",
+			proj.variable_names())]));
+	}
+	tensor<float> newtens(tname, tvar);
+	proj.add_tensor(newtens);
 }
 
 /*VARIABLE WIZARD: Walk the user through the definition of a new variable.
@@ -129,6 +152,10 @@ void wiz_new_variable(tenstat_project& proj) {
 /*INDEX WIZARD: Walk the user through the definition of a new index.
 Be sure to pass a refrence to the project this variable is being added to*/
 void wiz_new_index(tenstat_project& proj) {
+	print_wizard_header("New Index");
+	index addex(prompt_string("Enter a name for this index."),
+		prompt_string("Enter a description for this index."));
+	proj.add_index(addex);
 	return;
 }
 
